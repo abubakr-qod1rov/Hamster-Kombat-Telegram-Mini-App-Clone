@@ -1,6 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Settings: React.FC = () => {
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      // URL pushState bilan o'zgartiriladi, foydalanuvchini sahifa ichida qayta yuklamay "orqaga" qilish uchun
+      window.history.pushState(null, '', window.location.href);
+  
+      const handlePopState = (event: PopStateEvent) => {
+        event.preventDefault();
+        // Oldingi sahifaga qaytarish (web appdan chiqmaslik uchun)
+        navigate(-1);
+      };
+  
+      // "Orqaga" tugmasi bosilganida hodisani eshitish
+      window.addEventListener('popstate', handlePopState);
+  
+      return () => {
+        // Oyna qayta yuklanganida eshituvchini olib tashlash
+        window.removeEventListener('popstate', handlePopState);
+      };
+    }, [navigate]);
     const [animationEnabled, setAnimationEnabled] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
