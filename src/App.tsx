@@ -49,16 +49,6 @@ const App: React.FC = () => {
     localStorage.setItem('points', points.toString());
   }, [points]);
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = event;
-
-    setClicks(prevClicks => [
-      ...prevClicks,
-      { id: prevClicks.length, x: clientX, y: clientY },
-    ]);
-
-    setPoints(prevPoints => prevPoints + pointsToAdd);
-  };
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
@@ -82,6 +72,8 @@ const App: React.FC = () => {
 
     return `${paddedHours}:${paddedMinutes}`;
   };
+
+  
 
   useEffect(() => {
     const updateCountdowns = () => {
@@ -268,7 +260,7 @@ const App: React.FC = () => {
           style={{
             top: `${click.y - 42}px`,
             left: `${click.x - 28}px`,
-            animation: `float 1s ease-out`
+            animation: `float 0.5s ease-out`
           }}
           onAnimationEnd={() => handleAnimationEnd(click.id)}
         >
