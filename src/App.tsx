@@ -36,10 +36,29 @@ const App: React.FC = () => {
   ];
 
   const [levelIndex, setLevelIndex] = useState(6);
-  const [points, setPoints] = useState(5000);
-  const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [points, setPoints] = useState(() => {
+    const savedPoints = localStorage.getItem('points');
+    return savedPoints ? parseInt(savedPoints, 10) : 5000; 
+  });
+
+  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
   const pointsToAdd = 11;
-  const profitPerHour = 100000000;
+  const profitPerHour = 1000000;
+
+  useEffect(() => {
+    localStorage.setItem('points', points.toString());
+  }, [points]);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const { clientX, clientY } = event;
+
+    setClicks(prevClicks => [
+      ...prevClicks,
+      { id: prevClicks.length, x: clientX, y: clientY },
+    ]);
+
+    setPoints(prevPoints => prevPoints + pointsToAdd);
+  };
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
@@ -105,6 +124,7 @@ const App: React.FC = () => {
     return Math.min(progress, 100);
   };
 
+  
   useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
