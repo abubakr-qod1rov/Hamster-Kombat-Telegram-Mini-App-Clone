@@ -39,7 +39,7 @@ const App: React.FC = () => {
     1000000000// Lord
   ];
   
-  const [user, setUser] = useState<any>(null); // Replace 'any' with a more specific type if known
+  const [setUser] = useState<any>(null); // Replace 'any' with a more specific type if known
 
   useEffect(() => {
     // Инициализация Telegram Web Apps
