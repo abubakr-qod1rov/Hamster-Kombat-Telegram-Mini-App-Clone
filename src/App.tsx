@@ -8,7 +8,11 @@ import Mine from './icons/Mine';
 import Friends from './icons/Friends';
 import Coins from './icons/Coins';
 
+
+
+
 const App: React.FC = () => {
+  
   const levelNames = [
     "Bronze",    // From 0 to 4999 coins
     "Silver",    // From 5000 coins to 24,999 coins
@@ -34,20 +38,44 @@ const App: React.FC = () => {
     100000000,// GrandMaster
     1000000000// Lord
   ];
+  
+  const [user, setUser] = useState<any>(null); // Replace 'any' with a more specific type if known
+
+  useEffect(() => {
+    // Инициализация Telegram Web Apps
+    const tg = (window as any).Telegram.WebApp; // Cast window to 'any' to avoid TypeScript errors
+    tg.ready();
+
+    const user = tg.initDataUnsafe?.user;
+    setUser(user);
+
+    tg.onEvent('mainButtonClicked', () => {
+      tg.close();
+    });
+
+    tg.MainButton.text = "Закрыть приложение";
+    tg.MainButton.show();
+
+    return () => {
+    };
+  }, []);
+
 
   const [levelIndex, setLevelIndex] = useState(6);
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
-    return savedPoints ? parseInt(savedPoints, 10) : 5000; 
+    return savedPoints ? parseInt(savedPoints, 10) : 2000; 
   });
 
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
   const pointsToAdd = 11;
   const profitPerHour = 1000000;
+  
 
   useEffect(() => {
     localStorage.setItem('points', points.toString());
   }, [points]);
+  
 
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
@@ -62,6 +90,8 @@ const App: React.FC = () => {
     if (now.getUTCHours() >= targetHour) {
       target.setUTCDate(target.getUTCDate() + 1);
     }
+
+    
 
     const diff = target.getTime() - now.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -125,6 +155,8 @@ const App: React.FC = () => {
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
+
+    
   }, [points, levelIndex, levelMinPoints, levelNames.length]);
 
   const formatProfitPerHour = (profit: number) => {
@@ -151,7 +183,7 @@ const App: React.FC = () => {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">Nikandr (CEO)</p>
+              <p className="text-sm">Akbar</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -180,7 +212,7 @@ const App: React.FC = () => {
                 </div>
               </div>
               <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>
-              <Settings className="text-white" />
+              <Settings className="text-white cursor-pointer" />
             </div>
           </div>
         </div>
@@ -188,19 +220,19 @@ const App: React.FC = () => {
         <div className="flex-grow mt-4 bg-[#f3ba2f] rounded-t-[48px] relative top-glow z-0">
           <div className="absolute top-[2px] left-0 right-0 bottom-0 bg-[#1d2025] rounded-t-[46px]">
             <div className="px-4 mt-6 flex justify-between gap-2">
-              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
+              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative cursor-pointer">
                 <div className="dot"></div>
                 <img src={dailyReward} alt="Daily Reward" className="mx-auto w-12 h-12" />
                 <p className="text-[10px] text-center text-white mt-1">Daily reward</p>
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyRewardTimeLeft}</p>
               </div>
-              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
+              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative cursor-pointer">
                 <div className="dot"></div>
                 <img src={dailyCipher} alt="Daily Cipher" className="mx-auto w-12 h-12" />
                 <p className="text-[10px] text-center text-white mt-1">Daily cipher</p>
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyCipherTimeLeft}</p>
               </div>
-              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
+              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative cursor-pointer">
                 <div className="dot"></div>
                 <img src={dailyCombo} alt="Daily Combo" className="mx-auto w-12 h-12" />
                 <p className="text-[10px] text-center text-white mt-1">Daily combo</p>
