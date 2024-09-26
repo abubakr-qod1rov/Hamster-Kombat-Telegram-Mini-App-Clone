@@ -39,7 +39,7 @@ const App: React.FC = () => {
   const [points, setPoints] = useState(5000);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
   const pointsToAdd = 11;
-  const profitPerHour = 10000000;
+  const profitPerHour = 100000000;
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
