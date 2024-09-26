@@ -39,27 +39,6 @@ const App: React.FC = () => {
     1000000000// Lord
   ];
   
-  const [setUser] = useState<any>(null); // Replace 'any' with a more specific type if known
-
-  useEffect(() => {
-    // Инициализация Telegram Web Apps
-    const tg = (window as any).Telegram.WebApp; // Cast window to 'any' to avoid TypeScript errors
-    tg.ready();
-
-    const user = tg.initDataUnsafe?.user;
-    setUser(user);
-
-    tg.onEvent('mainButtonClicked', () => {
-      tg.close();
-    });
-
-    tg.MainButton.text = "Закрыть приложение";
-    tg.MainButton.show();
-
-    return () => {
-    };
-  }, []);
-
 
   const [levelIndex, setLevelIndex] = useState(6);
   const [points, setPoints] = useState(() => {
