@@ -36,7 +36,7 @@ const App: React.FC = () => {
   ];
 
   const [levelIndex, setLevelIndex] = useState(6);
-  const [points, setPoints] = useState(22749365);
+  const [points, setPoints] = useState(5000);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
   const pointsToAdd = 11;
   const profitPerHour = 126420;
@@ -205,7 +205,7 @@ const App: React.FC = () => {
 
             <div className="px-4 mt-4 flex justify-center">
               <div
-                className="w-80 h-80 p-4 rounded-full circle-outer"
+                className="w-80 h-80 p-4 rounded-full circle-outer cursor-pointer"
                 onClick={handleCardClick}
               >
                 <div className="w-full h-full rounded-full circle-inner">
@@ -219,23 +219,23 @@ const App: React.FC = () => {
 
       {/* Bottom fixed div */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-        <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
+        <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl cursor-pointer">
           <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Exchange</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
           <Mine className="w-8 h-8 mx-auto" />
           <p className="mt-1">Mine</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
           <Friends className="w-8 h-8 mx-auto" />
           <p className="mt-1">Friends</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
           <Coins className="w-8 h-8 mx-auto" />
           <p className="mt-1">Earn</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
           <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Airdrop</p>
         </div>
