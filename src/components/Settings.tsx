@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const Settings: React.FC = () => {
     const navigate = useNavigate();
   
     useEffect(() => {
-      // URL pushState bilan o'zgartiriladi, foydalanuvchini sahifa ichida qayta yuklamay "orqaga" qilish uchun
       window.history.pushState(null, '', window.location.href);
   
       const handlePopState = (event: PopStateEvent) => {
         event.preventDefault();
-        // Oldingi sahifaga qaytarish (web appdan chiqmaslik uchun)
         navigate(-1);
       };
   
-      // "Orqaga" tugmasi bosilganida hodisani eshitish
       window.addEventListener('popstate', handlePopState);
   
       return () => {
-        // Oyna qayta yuklanganida eshituvchini olib tashlash
         window.removeEventListener('popstate', handlePopState);
       };
     }, [navigate]);
@@ -41,7 +39,10 @@ const Settings: React.FC = () => {
     return (
         <div className="bg-black flex justify-center">
             <div className="w-full max-w-xl h-screen bg-black text-white p-6 space-y-6">
-                <h1 className="text-3xl font-bold text-center">Настройки</h1>
+                <div className="flex items-center gap-32">
+                    <div className=""><Link to="/"><h1 className="flex items-center justify-center text-md font-bold gap-2"><IoMdArrowRoundBack /> Назад</h1></Link></div>
+                    <h1 className="text-3xl font-bold text-center">Настройки</h1>
+                </div>
 
                 <div className="bg-gray-800 rounded-2xl p-6 flex justify-between items-center cursor-pointer">
                     <span>Сменить язык</span>
