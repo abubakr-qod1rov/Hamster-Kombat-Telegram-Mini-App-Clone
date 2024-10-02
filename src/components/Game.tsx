@@ -200,7 +200,7 @@ const Game: React.FC = () => {
       clearInterval(interval);
     };
   }, [profitPerHour]);
-  
+
 
 
   const [showModal, setShowModal] = useState(false);
@@ -223,6 +223,12 @@ const Game: React.FC = () => {
   const closeRankModal = () => setShowRankModal(false);
   const closeModal = () => setShowModal(false);
 
+
+  const [activeIndex, setActiveIndex] = useState<number | null>(null); // Aktiv indeksni saqlash
+
+  const handleClick = (index: number) => {
+    setActiveIndex(index); // Bosilganda aktiv indeksni yangilash
+  };
   return (
     <div className="bg-black flex justify-center h-screen overflow-hidden">
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-md">
@@ -254,13 +260,13 @@ const Game: React.FC = () => {
                       <p className='text-white text-center pt-10 text-2xl'>
                         Siz <span className='text-red-500 font-black'>{levelNames[levelIndex]}</span> darajasiga erishdingiz
                       </p>
-                      
-                    <button
-                      className="bg-[#000] text-white w-full py-5 rounded-2xl text-lg font-semibold flex items-center justify-center gap-2 mt-5"
-                      onClick={closeRankModal}
-                    >
-                      Спасибо <FaHeart />
-                    </button>
+
+                      <button
+                        className="bg-[#000] text-white w-full py-5 rounded-2xl text-lg font-semibold flex items-center justify-center gap-2 mt-5"
+                        onClick={closeRankModal}
+                      >
+                        Спасибо <FaHeart />
+                      </button>
                     </div>
                   </div>
                 )}
@@ -373,23 +379,38 @@ const Game: React.FC = () => {
 
       {/* Bottom fixed div */}
       <div className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-md bg-[#272a2f] flex justify-around items-center ${showModal ? 'z-[-1]' : 'z-10'} rounded-2xl text-xs`}>
-        <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl cursor-pointer">
-          <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
+        <div
+          className={`text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl cursor-pointer ${activeIndex === 0 ? 'bg-[#1c1f24]' : ''}`}
+          onClick={() => handleClick(0)}
+        >
+          <Link to="/"><img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" /></Link>
           <p className="mt-1">Exchange</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
+        <div
+          className={`text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl cursor-pointer ${activeIndex === 1 ? 'bg-[#1c1f24]' : ''}`}
+          onClick={() => handleClick(1)}
+        >
           <Mine className="w-8 h-8 mx-auto" />
           <p className="mt-1">Mine</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
+        <div
+          className={`text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl cursor-pointer ${activeIndex === 2 ? 'bg-[#1c1f24]' : ''}`}
+          onClick={() => handleClick(2)}
+        >
           <Friends className="w-8 h-8 mx-auto" />
           <p className="mt-1">Friends</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
+        <div
+          className={`text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl cursor-pointer ${activeIndex === 3 ? 'bg-[#1c1f24]' : ''}`}
+          onClick={() => handleClick(3)}
+        >
           <Coins className="w-8 h-8 mx-auto" />
           <p className="mt-1">Earn</p>
         </div>
-        <div className="text-center text-[#85827d] w-1/5 cursor-pointer">
+        <div
+          className={`text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl cursor-pointer ${activeIndex === 4 ? 'bg-[#1c1f24]' : ''}`}
+          onClick={() => handleClick(4)}
+        >
           <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Airdrop</p>
         </div>
