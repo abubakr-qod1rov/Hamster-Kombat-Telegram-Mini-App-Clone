@@ -165,25 +165,26 @@ const Game: React.FC = () => {
       const timeDifference = (Date.now() - parseInt(lastExitTime)) / 1000;
       const calculatedOfflinePoints = Math.floor(pointsPerSecond * timeDifference);
 
+      // Offline ballar hisoblanishi
       if (calculatedOfflinePoints > 0) {
-        setOfflinePoints(calculatedOfflinePoints);
-        setPoints(prevPoints => prevPoints + calculatedOfflinePoints);
-        setShowModal(true);
+        setOfflinePoints(calculatedOfflinePoints); // Offline ballarni saqlaymiz
+        setPoints(prevPoints => prevPoints + calculatedOfflinePoints); // Yana ballarni yangilaymiz
+        setShowModal(true); // Modalni ko'rsatamiz
       }
-    } else {
-      setShowModal(true);
     }
 
-
+    // Ballarni har sekundda hisoblash
     const interval = setInterval(() => {
       setPoints(prevPoints => prevPoints + pointsPerSecond);
     }, 1000);
 
+    // Sahifadan chiqayotganda vaqtni saqlash
     return () => {
       localStorage.setItem('lastExitTime', Date.now().toString());
       clearInterval(interval);
     };
   }, [profitPerHour]);
+
 
 
   const [showModal, setShowModal] = useState(false);
