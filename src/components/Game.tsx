@@ -7,6 +7,7 @@ import Settings from '../icons/Settings';
 import Mine from '../icons/Mine';
 import Friends from '../icons/Friends';
 import Coins from '../icons/Coins';
+import { FaHeart } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 
 import RankVid from "../assets/RankVid.mp4"
@@ -52,6 +53,7 @@ const Game: React.FC = () => {
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
   const pointsToAdd = 11;
   const profitPerHour = 1000000;
+  const [offlinePoints, setOfflinePoints] = useState<number>(0);
 
 
   useEffect(() => {
@@ -95,7 +97,7 @@ const Game: React.FC = () => {
     };
 
     updateCountdowns();
-    const interval = setInterval(updateCountdowns, 60000); // Update every minute
+    const interval = setInterval(updateCountdowns, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -148,15 +150,45 @@ const Game: React.FC = () => {
     return `+${profit}`;
   };
 
+  const formatOfflinePoints = (points: number) => {
+    if (points >= 1000000000) return `${(points / 1000000000).toFixed(2)}B`;
+    if (points >= 1000000) return `${(points / 1000000).toFixed(2)}M`;
+    if (points >= 1000) return `${(points / 1000).toFixed(2)}K`;
+    return `${points}`;
+  };
+
   useEffect(() => {
     const pointsPerSecond = Math.floor(profitPerHour / 3600);
+    const lastExitTime = localStorage.getItem('lastExitTime');
+
+    if (lastExitTime) {
+      const timeDifference = (Date.now() - parseInt(lastExitTime)) / 1000;
+      const calculatedOfflinePoints = Math.floor(pointsPerSecond * timeDifference);
+
+      if (calculatedOfflinePoints > 0) {
+        setOfflinePoints(calculatedOfflinePoints);
+        setPoints(prevPoints => prevPoints + calculatedOfflinePoints);
+        setShowModal(true);
+      }
+    } else {
+      setShowModal(true);
+    }
+
+
     const interval = setInterval(() => {
       setPoints(prevPoints => prevPoints + pointsPerSecond);
     }, 1000);
-    return () => clearInterval(interval);
+
+    return () => {
+      localStorage.setItem('lastExitTime', Date.now().toString());
+      clearInterval(interval);
+    };
   }, [profitPerHour]);
+
+
   const [showModal, setShowModal] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false); 
+  const [isAnimating, setIsAnimating] = useState(false);
+
 
   useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
@@ -174,7 +206,7 @@ const Game: React.FC = () => {
 
   return (
     <div className="bg-black flex justify-center h-screen overflow-hidden">
-      <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
+      <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-md">
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
             <div className="p-1 rounded-lg bg-[#1d2025]">
@@ -274,6 +306,31 @@ const Game: React.FC = () => {
               </div>
             </div>
 
+            {showModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-end z-10" onClick={closeModal}>
+                <div className="bg-[#0d1b2a]  w-full max-w-md h-[55vh] rounded-t-3xl p-6 text-center text-white border-t-2 border-yellow-300">
+                  <div className='p-8 bg-[#1b263b] mb-6 rounded-3xl'>
+                    <div className='flex items-center justify-center gap-2 mb-5'>
+                      <img src={dollarCoin} alt="Dollar Coin" className="w-14 h-14" />
+                      <h2 className="text-5xl font-bold">{formatOfflinePoints(offlinePoints)}</h2>
+                    </div>
+                    <p className="text-lg">
+                      Akbar Kombat начал работать для вас
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <button
+                      className="bg-[#0077b6] text-white w-full py-5 rounded-2xl text-lg font-semibold flex items-center justify-center gap-2"
+                      onClick={closeModal}
+                    >
+                      Спасибо, Akbar Kombat <FaHeart />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
             <div className="px-4 mt-4 flex justify-center">
               <div
                 className="w-80 h-80 p-4 rounded-full circle-outer cursor-pointer"
@@ -289,7 +346,7 @@ const Game: React.FC = () => {
       </div>
 
       {/* Bottom fixed div */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
+      <div className={`fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-md bg-[#272a2f] flex justify-around items-center ${showModal ? 'z-[-1]' : 'z-10'} rounded-2xl text-xs`}>
         <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl cursor-pointer">
           <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Exchange</p>

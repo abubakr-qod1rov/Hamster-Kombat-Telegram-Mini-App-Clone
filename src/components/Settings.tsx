@@ -60,20 +60,20 @@ const Settings: React.FC = () => {
 
                 {isModalOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-end z-50" onClick={closeModal}>
-                        <div className="bg-gray-500 w-full max-w-md rounded-t-2xl p-6 text-center text-white">
-                            <h2 className="text-xl font-bold mb-4">Вы уверены, что хотите удалить свой аккаунт?</h2>
+                        <div className="bg-[#0d1b2a]  w-full max-w-xl h-[50vh] rounded-t-3xl p-6 text-center text-white border-t-2 border-yellow-300 flex flex-col gap-6">
+                            <h2 className="text-xl font-bold mb-4 mt-6">Вы уверены, что хотите удалить свой аккаунт?</h2>
                             <p className="text-sm mb-6">
                                 Все ваши данные, включая прогресс в игре, достижения и покупки, будут безвозвратно удалены. Это действие нельзя отменить.
                             </p>
                             <div className="space-y-4">
                                 <button
-                                    className="bg-red-600 text-white w-full py-3 rounded-lg text-lg font-semibold border border-slate-100"
+                                    className="bg-red-600 text-white w-full py-4 rounded-lg text-lg font-semibold"
                                     onClick={handleDeleteAccount}
                                 >
                                     Удалить аккаунт
                                 </button>
                                 <button
-                                    className="bg-gray-700 text-white w-full py-3 rounded-lg text-lg font-semibold border border-slate-100"
+                                    className="bg-gray-700 text-white w-full py-4 rounded-lg text-lg font-semibold"
                                     onClick={closeModal}
                                 >
                                     Отмена
