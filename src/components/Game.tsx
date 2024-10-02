@@ -52,7 +52,7 @@ const Game: React.FC = () => {
 
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
   const pointsToAdd = 11;
-  const profitPerHour = 1000000;
+  // const profitPerHour = 1000000;
   const [offlinePoints, setOfflinePoints] = useState<number>(0);
 
 
@@ -157,23 +157,31 @@ const Game: React.FC = () => {
     return `${points}`;
   };
 
+  const getProfitPerHour = () => {
+    const storedProfit = localStorage.getItem('profitPerHour');
+    if (storedProfit) {
+      return parseInt(storedProfit, 10);
+    } else {
+      const defaultProfit = 1000000; // default profit
+      localStorage.setItem('profitPerHour', defaultProfit.toString());
+      return defaultProfit;
+    }
+  };
+
+  const profitPerHour = getProfitPerHour(); // Profit per hour ni olish
+
   useEffect(() => {
-    const pointsPerSecond = Math.floor(profitPerHour / 3600);
+    const pointsPerSecond = Math.floor(profitPerHour / 3600); // Sekundda to'planadigan ball
     const lastExitTime = localStorage.getItem('lastExitTime');
-  
+    const currentTime = Date.now();
+
     if (lastExitTime) {
       const lastExitTimestamp = parseInt(lastExitTime, 10);
-      const currentTime = Date.now();
-      const timeDifference = (currentTime - lastExitTimestamp) / 1000; // Sekundlarda hisoblang
+      const timeDifference = (currentTime - lastExitTimestamp) / 1000; // Sekundlarda hisoblash
       const calculatedOfflinePoints = Math.floor(pointsPerSecond * timeDifference);
-  
-      console.log('lastExitTime:', lastExitTime); // string sifatida
-      console.log('lastExitTimestamp:', lastExitTimestamp); // raqamli formatda
-      console.log('currentTime:', currentTime); // hozirgi vaqt
-      console.log('timeDifference:', timeDifference); // sekundlarda
-      console.log('calculatedOfflinePoints:', calculatedOfflinePoints); // hisoblangan offline ballar
-  
-      // Offline ballarni hisoblang
+
+      console.log('calculatedOfflinePoints:', calculatedOfflinePoints);
+
       if (calculatedOfflinePoints > 0) {
         setOfflinePoints(calculatedOfflinePoints);
         setPoints(prevPoints => prevPoints + calculatedOfflinePoints);
@@ -182,17 +190,17 @@ const Game: React.FC = () => {
     } else {
       setShowModal(true);
     }
-  
+
     const interval = setInterval(() => {
       setPoints(prevPoints => prevPoints + pointsPerSecond);
     }, 1000);
-  
+
     return () => {
-      localStorage.setItem('lastExitTime', Date.now().toString());
+      localStorage.setItem('lastExitTime', currentTime.toString());
       clearInterval(interval);
     };
   }, [profitPerHour]);
-
+  
 
 
   const [showModal, setShowModal] = useState(false);
