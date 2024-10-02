@@ -160,27 +160,33 @@ const Game: React.FC = () => {
   useEffect(() => {
     const pointsPerSecond = Math.floor(profitPerHour / 3600);
     const lastExitTime = localStorage.getItem('lastExitTime');
-
+  
     if (lastExitTime) {
-      const timeDifference = (Date.now() - parseInt(lastExitTime)) / 1000;
+      const lastExitTimestamp = parseInt(lastExitTime, 10);
+      const currentTime = Date.now();
+      const timeDifference = (currentTime - lastExitTimestamp) / 1000; // Sekundlarda hisoblang
       const calculatedOfflinePoints = Math.floor(pointsPerSecond * timeDifference);
-
-      // Offline ballar hisoblanishi
+  
+      console.log('lastExitTime:', lastExitTime); // string sifatida
+      console.log('lastExitTimestamp:', lastExitTimestamp); // raqamli formatda
+      console.log('currentTime:', currentTime); // hozirgi vaqt
+      console.log('timeDifference:', timeDifference); // sekundlarda
+      console.log('calculatedOfflinePoints:', calculatedOfflinePoints); // hisoblangan offline ballar
+  
+      // Offline ballarni hisoblang
       if (calculatedOfflinePoints > 0) {
-        setOfflinePoints(calculatedOfflinePoints); // Offline ballarni saqlaymiz
-        setPoints(prevPoints => prevPoints + calculatedOfflinePoints); // Yana ballarni yangilaymiz
-        setShowModal(true); // Modalni ko'rsatamiz
+        setOfflinePoints(calculatedOfflinePoints);
+        setPoints(prevPoints => prevPoints + calculatedOfflinePoints);
+        setShowModal(true);
       }
-    }else {
+    } else {
       setShowModal(true);
     }
-
-    // Ballarni har sekundda hisoblash
+  
     const interval = setInterval(() => {
       setPoints(prevPoints => prevPoints + pointsPerSecond);
     }, 1000);
-
-    // Sahifadan chiqayotganda vaqtni saqlash
+  
     return () => {
       localStorage.setItem('lastExitTime', Date.now().toString());
       clearInterval(interval);
