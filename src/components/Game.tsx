@@ -171,6 +171,8 @@ const Game: React.FC = () => {
         setPoints(prevPoints => prevPoints + calculatedOfflinePoints); // Yana ballarni yangilaymiz
         setShowModal(true); // Modalni ko'rsatamiz
       }
+    }else {
+      setShowModal(true);
     }
 
     // Ballarni har sekundda hisoblash
@@ -188,6 +190,7 @@ const Game: React.FC = () => {
 
 
   const [showModal, setShowModal] = useState(false);
+  const [showRankModal, setShowRankModal] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
 
@@ -196,13 +199,14 @@ const Game: React.FC = () => {
     const nextLevelMin = levelMinPoints[levelIndex + 1];
     if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
       setLevelIndex(levelIndex + 1);
-      setShowModal(true);
+      setShowRankModal(true);
       setIsAnimating(true);
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
   }, [points, levelIndex, levelMinPoints, levelNames.length]);
 
+  const closeRankModal = () => setShowRankModal(false);
   const closeModal = () => setShowModal(false);
 
   return (
@@ -227,8 +231,8 @@ const Game: React.FC = () => {
                   </p>
                 </div>
 
-                {showModal && (
-                  <div className={`fixed inset-0 bg-blue-500 bg-opacity-75 flex justify-center items-center rounded transition-transform duration-1000 transform ${isAnimating ? 'scale-1000' : 'scale-0'}`} onClick={closeModal}>
+                {showRankModal && (
+                  <div className={`fixed inset-0 bg-blue-500 bg-opacity-75 flex justify-center items-center rounded transition-transform duration-1000 transform ${isAnimating ? 'scale-1000' : 'scale-0'}`}>
                     <div className="p-6 rounded">
                       <video width="400" autoPlay className="mt-4 rounded-full">
                         <source src={RankVid} type="video/mp4" />
@@ -236,6 +240,13 @@ const Game: React.FC = () => {
                       <p className='text-white text-center pt-10 text-2xl'>
                         Siz <span className='text-red-500 font-black'>{levelNames[levelIndex]}</span> darajasiga erishdingiz
                       </p>
+                      
+                    <button
+                      className="bg-[#000] text-white w-full py-5 rounded-2xl text-lg font-semibold flex items-center justify-center gap-2 mt-5"
+                      onClick={closeRankModal}
+                    >
+                      Спасибо <FaHeart />
+                    </button>
                     </div>
                   </div>
                 )}

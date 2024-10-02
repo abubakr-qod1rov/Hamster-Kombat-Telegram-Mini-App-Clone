@@ -11,6 +11,25 @@ declare global {
 }
 
 const App: React.FC = () => {
+    useEffect(() => {
+      const handleOnline = () => {
+        console.log("Siz onlaynsiz!");
+        // Onlayn holatga o'tganda bajariladigan ishlar
+      };
+  
+      const handleOffline = () => {
+        console.log("Siz oflaynsiz!");
+        // Offline holatga o'tganda bajariladigan ishlar
+      };
+  
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+  
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
+    }, []);
 
     useEffect(() => {
         if (window.Telegram && window.Telegram.WebApp) {

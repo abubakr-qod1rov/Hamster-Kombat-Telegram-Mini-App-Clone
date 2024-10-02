@@ -8,3 +8,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 )
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('Service Worker ro\'yxatdan o\'tgan:', registration);
+      })
+      .catch((error) => {
+        console.error('Service Worker ro\'yxatdan o\'ta olmadi:', error);
+      });
+  });
+}
